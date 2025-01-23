@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 
+# DOWNLOAD_EXTRACT_TIMESTAMP
+cmake_policy(SET CMP0135 NEW)
+
 project(VulkanFreshman
         VERSION 0.0.1
-        DESCRIPTION "Vulkan triangle with SDL3"
+        DESCRIPTION "Vulkan triangle demo"
         LANGUAGES CXX
 )
 
@@ -12,11 +15,19 @@ include(FetchContent)
 find_package(Vulkan REQUIRED)
 
 FetchContent_Declare(
-        SDL
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-        GIT_TAG release-3.2.0
+        glfw
+        URL https://github.com/glfw/glfw/archive/refs/tags/3.4.tar.gz
+        DOWNLOAD_EXTRACT_TIMESTAMP
 )
-FetchContent_MakeAvailable(SDL)
+FetchContent_MakeAvailable(glfw)
+
+# Helper
+function(copy_dlls_if_needed name)
+    if (WIN32)
+        add_custom_command(TARGET ${name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+                copy_if_different $<TARGET_RUNTIME_DLLS:${name}> $<TARGET_FILE:${name}> $<TARGET_FILE_DIR:${name}> COMMAND_EXPAND_LISTS)
+    endif ()
+endfunction()
 
 # Sources
 add_subdirectory(src)

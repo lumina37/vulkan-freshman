@@ -8,18 +8,13 @@ target_compile_definitions(vkf-lib INTERFACE
         GLFW_INCLUDE_VULKAN
 )
 
-target_link_directories(vkf-lib INTERFACE
-        $ENV{VK_SDK_PATH}/Third-Party/glfw3/lib
-)
-
 target_link_libraries(vkf-lib INTERFACE
         Vulkan::Vulkan
-        glfw3
+        glfw
 )
 
 target_include_directories(vkf-lib INTERFACE
         include
-        $ENV{VK_SDK_PATH}/Third-Party/glfw3/include
 )
 
 add_subdirectory(bin)
