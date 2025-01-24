@@ -4,9 +4,8 @@
 
 namespace vkf {
 
-class WindowManager
-{
-public:
+class WindowManager {
+   public:
     inline WindowManager(int width, int height);
     inline WindowManager();
 
@@ -15,23 +14,21 @@ public:
 
     inline void loop();
 
-private:
+   private:
     GLFWwindow* window_;
 };
 
-WindowManager::WindowManager(int width, int height)
-{
+WindowManager::WindowManager(int width, int height) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     window_ = glfwCreateWindow(width, height, "Vulkan Freshman", NULL, NULL);
 }
 
 WindowManager::WindowManager() { glfwDestroyWindow(window_); }
 
-void WindowManager::loop()
-{
+void WindowManager::loop() {
     while (!glfwWindowShouldClose(window_)) {
         glfwPollEvents();
     }
 }
 
-} // namespace vkf
+}  // namespace vkf

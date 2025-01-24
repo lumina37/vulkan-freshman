@@ -16,8 +16,8 @@ find_package(Vulkan REQUIRED)
 
 FetchContent_Declare(
         glfw
+        DOWNLOAD_EXTRACT_TIMESTAMP ON
         URL https://github.com/glfw/glfw/archive/refs/tags/3.4.tar.gz
-        DOWNLOAD_EXTRACT_TIMESTAMP
 )
 FetchContent_MakeAvailable(glfw)
 
