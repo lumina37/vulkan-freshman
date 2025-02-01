@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <array>
 
 #include <vulkan/vulkan.hpp>
 
@@ -45,7 +45,7 @@ DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFa
     vk::DeviceCreateInfo deviceInfo;
     deviceInfo.setQueueCreateInfos(deviceQueueInfos);
 
-    std::vector<const char*> exts{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+    std::array exts{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
     deviceInfo.setPEnabledExtensionNames(exts);
 
     device_ = phyDevice.createDevice(deviceInfo);

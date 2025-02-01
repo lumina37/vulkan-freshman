@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <array>
 
 #include <vulkan/vulkan.hpp>
 
@@ -41,8 +41,8 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
     } else {
         swapchainInfo.setImageSharingMode(vk::SharingMode::eConcurrent);
         swapchainInfo.setQueueFamilyIndexCount(2);
-        std::vector<uint32_t> queuefamilyIndices{queuefamilyMgr.getGraphicsQFamilyIndex(),
-                                                 queuefamilyMgr.getPresentQFamilyIndex()};
+        std::array queuefamilyIndices{queuefamilyMgr.getGraphicsQFamilyIndex(),
+                                      queuefamilyMgr.getPresentQFamilyIndex()};
         swapchainInfo.setQueueFamilyIndices(queuefamilyIndices);
     }
 

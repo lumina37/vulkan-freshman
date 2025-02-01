@@ -5,15 +5,15 @@ int main(int argc, char** argv) {
 
     vkf::WindowManager::globalInit();
 
-    vkf::InstanceManager instanceManager;
-    vkf::PhyDeviceManager phyDeviceManager{instanceManager};
-    vkf::WindowManager windowManager{extent};
-    vkf::SurfaceManager surfaceManager{instanceManager, windowManager};
-    vkf::QueueFamilyManager queueFamilyManager{instanceManager, phyDeviceManager, surfaceManager};
-    vkf::DeviceManager deviceManager{phyDeviceManager, queueFamilyManager};
-    vkf::SwapChainManager swapchainManager{deviceManager, surfaceManager, queueFamilyManager, extent};
+    vkf::InstanceManager instMgr;
+    vkf::PhyDeviceManager phyDeviceMgr{instMgr};
+    vkf::WindowManager windowMgr{extent};
+    vkf::SurfaceManager surfaceMgr{instMgr, windowMgr};
+    vkf::QueueFamilyManager queueFamilyMgr{instMgr, phyDeviceMgr, surfaceMgr};
+    vkf::DeviceManager deviceMgr{phyDeviceMgr, queueFamilyMgr};
+    vkf::SwapChainManager swapchainMgr{deviceMgr, surfaceMgr, queueFamilyMgr, extent};
 
-    windowManager.loop();
+    windowMgr.loop();
 
     vkf::WindowManager::globalDestroy();
 }
