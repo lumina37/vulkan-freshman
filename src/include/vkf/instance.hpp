@@ -6,16 +6,17 @@
 
 #include "vkf/helper/defines.hpp"
 #include "vkf/helper/env.hpp"
+#include "vkf/window.hpp"
 
 namespace vkf {
 
 class InstanceManager {
 public:
-    InstanceManager();
-    ~InstanceManager();
+    inline InstanceManager();
+    inline ~InstanceManager() noexcept;
 
-    inline vk::Instance& getInstance() noexcept { return instance_; }
-    inline const vk::Instance& getInstance() const noexcept { return instance_; }
+    [[nodiscard]] inline vk::Instance& getInstance() noexcept { return instance_; }
+    [[nodiscard]] inline const vk::Instance& getInstance() const noexcept { return instance_; }
 
 private:
     vk::Instance instance_;
@@ -37,9 +38,13 @@ InstanceManager::InstanceManager() {
         }
     }
 
+    const auto [count, pExts] = WindowManager::getExtensions();
+    instInfo.setEnabledExtensionCount(count);
+    instInfo.setPpEnabledExtensionNames(pExts);
+
     instance_ = vk::createInstance(instInfo);
 };
 
-InstanceManager::~InstanceManager() { instance_.destroy(); }
+InstanceManager::~InstanceManager() noexcept { instance_.destroy(); }
 
 }  // namespace vkf
