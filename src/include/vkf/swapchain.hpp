@@ -17,18 +17,25 @@ public:
                             const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent);
     inline ~SwapChainManager() noexcept;
 
+    [[nodiscard]] inline vk::SwapchainKHR& getSwapchain() noexcept { return swapchain_; }
+    [[nodiscard]] inline const vk::SwapchainKHR& getSwapchain() const noexcept { return swapchain_; }
+
 private:
     const DeviceManager& deviceMgr_;  // FIXME: UAF
     vk::SwapchainKHR swapchain_;
+    std::vector<vk::Image> images_;
+    std::vector<vk::ImageView> imageViews_;
 };
 
 SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const SurfaceManager& surfaceMgr,
                                    const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent)
     : deviceMgr_(deviceMgr) {
+    constexpr vk::Format imageFormat = vk::Format::eB8G8R8A8Unorm;
+
     vk::SwapchainCreateInfoKHR swapchainInfo;
     swapchainInfo.setSurface(surfaceMgr.getSurface());
     swapchainInfo.setImageExtent(extent);
-    swapchainInfo.setImageFormat(vk::Format::eB8G8R8A8Unorm);             // TODO: auto-select
+    swapchainInfo.setImageFormat(imageFormat);                            // TODO: auto-select
     swapchainInfo.setImageColorSpace(vk::ColorSpaceKHR::eSrgbNonlinear);  // TODO: auto-select
     swapchainInfo.setImageArrayLayers(1);
     swapchainInfo.setImageUsage(vk::ImageUsageFlagBits::eColorAttachment);
@@ -48,8 +55,32 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
 
     const auto& device = deviceMgr.getDevice();
     swapchain_ = device.createSwapchainKHR(swapchainInfo);
+
+    images_ = device.getSwapchainImagesKHR(swapchain_);
+    imageViews_.reserve(images_.size());
+    for (const auto& image : images_) {
+        vk::ImageSubresourceRange subResRange;
+        subResRange.setAspectMask(vk::ImageAspectFlagBits::eColor);
+        subResRange.setLevelCount(1);
+        subResRange.setLayerCount(1);
+
+        vk::ImageViewCreateInfo viewInfo;
+        viewInfo.setImage(image);
+        viewInfo.setViewType(vk::ImageViewType::e2D);
+        viewInfo.setFormat(imageFormat);
+        viewInfo.setSubresourceRange(subResRange);
+        auto imageView = device.createImageView(viewInfo);
+
+        imageViews_.push_back(std::move(imageView));
+    }
 }
 
-SwapChainManager::~SwapChainManager() noexcept { deviceMgr_.getDevice().destroy(swapchain_); }
+SwapChainManager::~SwapChainManager() noexcept {
+    const auto& device = deviceMgr_.getDevice();
+    device.destroy(swapchain_);
+    for (const auto& imageView : imageViews_) {
+        device.destroy(imageView);
+    }
+}
 
 }  // namespace vkf
