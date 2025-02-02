@@ -17,8 +17,10 @@ public:
     inline DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr);
     inline ~DeviceManager() noexcept;
 
-    [[nodiscard]] inline vk::Device& getDevice() noexcept { return device_; }
-    [[nodiscard]] inline const vk::Device& getDevice() const noexcept { return device_; }
+    template <class Self>
+    [[nodiscard]] inline auto&& getDevice(this Self& self) noexcept {
+        return std::forward_like<Self>(self).device_;
+    }
 
 private:
     vk::Device device_;
@@ -46,7 +48,7 @@ DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFa
     vk::DeviceCreateInfo deviceInfo;
     deviceInfo.setQueueCreateInfos(deviceQueueInfos);
 
-    std::array exts{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+    const std::array exts{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
     deviceInfo.setPEnabledExtensionNames(exts);
 
     device_ = phyDevice.createDevice(deviceInfo);

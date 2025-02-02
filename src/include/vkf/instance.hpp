@@ -15,8 +15,10 @@ public:
     inline InstanceManager();
     inline ~InstanceManager() noexcept;
 
-    [[nodiscard]] inline vk::Instance& getInstance() noexcept { return instance_; }
-    [[nodiscard]] inline const vk::Instance& getInstance() const noexcept { return instance_; }
+    template <class Self>
+    [[nodiscard]] inline auto&& getInstance(this Self& self) noexcept {
+        return std::forward_like<Self>(self).instance_;
+    }
 
 private:
     vk::Instance instance_;

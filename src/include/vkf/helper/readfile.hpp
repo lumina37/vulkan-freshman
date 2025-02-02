@@ -22,7 +22,7 @@ std::vector<std::byte> readFile(const fs::path& path) {
         }
     }
 
-    size_t fileSize = (size_t)file.tellg();
+    std::streamsize fileSize = file.tellg();
     std::vector<std::byte> buffer(fileSize);
 
     file.seekg(0);

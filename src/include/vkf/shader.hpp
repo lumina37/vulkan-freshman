@@ -16,6 +16,11 @@ public:
     inline ShaderManager(const DeviceManager& deviceMgr, const fs::path& path);
     inline ~ShaderManager() noexcept;
 
+    template <class Self>
+    [[nodiscard]] inline auto&& getShaderModule(this Self& self) noexcept {
+        return std::forward_like<Self>(self).shader_;
+    }
+
 private:
     const DeviceManager& deviceMgr_;  // FIXME: UAF
     vk::ShaderModule shader_;

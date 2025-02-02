@@ -13,8 +13,10 @@ public:
     inline SurfaceManager(const InstanceManager& instanceMgr, WindowManager& windowMgr);
     inline ~SurfaceManager() noexcept;
 
-    [[nodiscard]] inline vk::SurfaceKHR& getSurface() noexcept;
-    [[nodiscard]] inline const vk::SurfaceKHR& getSurface() const noexcept;
+    template <class Self>
+    [[nodiscard]] inline auto&& getSurface(this Self& self) noexcept {
+        return std::forward_like<Self>(self).surface_;
+    }
 
 private:
     const InstanceManager& instanceMgr_;  // FIXME: UAF
@@ -27,9 +29,5 @@ SurfaceManager::SurfaceManager(const InstanceManager& instanceMgr, WindowManager
 }
 
 SurfaceManager::~SurfaceManager() noexcept { instanceMgr_.getInstance().destroySurfaceKHR(surface_); }
-
-vk::SurfaceKHR& SurfaceManager::getSurface() noexcept { return surface_; }
-
-const vk::SurfaceKHR& SurfaceManager::getSurface() const noexcept { return surface_; }
 
 }  // namespace vkf

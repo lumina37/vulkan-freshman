@@ -20,8 +20,10 @@ public:
     [[nodiscard]] inline uint32_t getWidth() const noexcept { return extent_.width; };
     [[nodiscard]] inline uint32_t getHeight() const noexcept { return extent_.height; };
     [[nodiscard]] inline vk::Extent2D getExtent() const noexcept { return extent_; };
-    [[nodiscard]] inline GLFWwindow* getWindow() noexcept { return window_; };
-    [[nodiscard]] inline const GLFWwindow* getWindow() const noexcept { return window_; };
+    template <class Self>
+    [[nodiscard]] inline auto&& getWindow(this Self& self) noexcept {
+        return std::forward_like<Self>(self).window_;
+    }
 
     inline void loop();
 

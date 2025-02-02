@@ -13,8 +13,10 @@ class PhyDeviceManager {
 public:
     inline PhyDeviceManager(const InstanceManager& instMgr);
 
-    [[nodiscard]] inline vk::PhysicalDevice& getPhysicalDevice() noexcept { return physicalDevice_; }
-    [[nodiscard]] inline const vk::PhysicalDevice& getPhysicalDevice() const noexcept { return physicalDevice_; }
+    template <class Self>
+    [[nodiscard]] inline auto&& getPhysicalDevice(this Self& self) noexcept {
+        return std::forward_like<Self>(self).physicalDevice_;
+    }
 
 private:
     vk::PhysicalDevice physicalDevice_;

@@ -19,8 +19,10 @@ public:
                             const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent);
     inline ~SwapChainManager() noexcept;
 
-    [[nodiscard]] inline vk::SwapchainKHR& getSwapchain() noexcept { return swapchain_; }
-    [[nodiscard]] inline const vk::SwapchainKHR& getSwapchain() const noexcept { return swapchain_; }
+    template <class Self>
+    [[nodiscard]] inline auto&& getSwapchain(this Self& self) noexcept {
+        return std::forward_like<Self>(self).swapchain_;
+    }
 
 private:
     const DeviceManager& deviceMgr_;  // FIXME: UAF
@@ -50,8 +52,8 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
     } else {
         swapchainInfo.setImageSharingMode(vk::SharingMode::eConcurrent);
         swapchainInfo.setQueueFamilyIndexCount(2);
-        std::array queuefamilyIndices{queuefamilyMgr.getGraphicsQFamilyIndex(),
-                                      queuefamilyMgr.getPresentQFamilyIndex()};
+        const std::array queuefamilyIndices{queuefamilyMgr.getGraphicsQFamilyIndex(),
+                                            queuefamilyMgr.getPresentQFamilyIndex()};
         swapchainInfo.setQueueFamilyIndices(queuefamilyIndices);
     }
 
