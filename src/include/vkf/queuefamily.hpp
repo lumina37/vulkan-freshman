@@ -43,7 +43,7 @@ QueueFamilyManager::QueueFamilyManager(const InstanceManager& instMgr, const Phy
             graphicsQFamilyIndex_ = (uint32_t)idx;
             presentQFamilyIndex_ = (uint32_t)idx;
             if constexpr (ENABLE_DEBUG) {
-                std::print("Findout a sufficient queue family: {}\n", graphicsQFamilyIndex_);
+                std::println("Findout a sufficient queue family: {}", graphicsQFamilyIndex_);
             }
         }
     }

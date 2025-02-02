@@ -1,6 +1,8 @@
 #pragma once
 
 #include <array>
+#include <utility>
+#include <vector>
 
 #include <vulkan/vulkan.hpp>
 
@@ -71,15 +73,15 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
         viewInfo.setSubresourceRange(subResRange);
         auto imageView = device.createImageView(viewInfo);
 
-        imageViews_.push_back(std::move(imageView));
+        imageViews_.push_back(imageView);
     }
 }
 
 SwapChainManager::~SwapChainManager() noexcept {
     const auto& device = deviceMgr_.getDevice();
-    device.destroy(swapchain_);
+    device.destroySwapchainKHR(swapchain_);
     for (const auto& imageView : imageViews_) {
-        device.destroy(imageView);
+        device.destroyImageView(imageView);
     }
 }
 

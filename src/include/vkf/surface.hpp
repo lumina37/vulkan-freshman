@@ -26,7 +26,7 @@ SurfaceManager::SurfaceManager(const InstanceManager& instanceMgr, WindowManager
     glfwCreateWindowSurface(instanceMgr.getInstance(), windowMgr.getWindow(), nullptr, (VkSurfaceKHR)&surface_);
 }
 
-SurfaceManager::~SurfaceManager() noexcept { instanceMgr_.getInstance().destroy(surface_); }
+SurfaceManager::~SurfaceManager() noexcept { instanceMgr_.getInstance().destroySurfaceKHR(surface_); }
 
 vk::SurfaceKHR& SurfaceManager::getSurface() noexcept { return surface_; }
 

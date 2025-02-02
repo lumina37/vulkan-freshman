@@ -1,7 +1,7 @@
 #pragma once
 
 #include <print>
-#include <unordered_set>
+
 #include <vulkan/vulkan.hpp>
 
 #include "vkf/helper/defines.hpp"

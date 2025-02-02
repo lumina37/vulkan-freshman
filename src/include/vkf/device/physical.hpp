@@ -25,7 +25,7 @@ PhyDeviceManager::PhyDeviceManager(const InstanceManager& instMgr) {
     const auto& phyDevices = instance.enumeratePhysicalDevices();
     physicalDevice_ = phyDevices[0];  // TODO: rank by features
     if constexpr (ENABLE_DEBUG) {
-        std::print("Init physical device: {}\n", physicalDevice_.getProperties().deviceName.data());
+        std::println("Init physical device: {}", physicalDevice_.getProperties().deviceName.data());
     }
 }
 

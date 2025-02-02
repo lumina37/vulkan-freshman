@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
     vkf::QueueFamilyManager queueFamilyMgr{instMgr, phyDeviceMgr, surfaceMgr};
     vkf::DeviceManager deviceMgr{phyDeviceMgr, queueFamilyMgr};
     vkf::SwapChainManager swapchainMgr{deviceMgr, surfaceMgr, queueFamilyMgr, extent};
+    vkf::ShaderManager shaderMgr{deviceMgr, "../shader/triangle.vert.spv"};
 
     windowMgr.loop();
 
