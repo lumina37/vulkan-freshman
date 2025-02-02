@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
 
-# DOWNLOAD_EXTRACT_TIMESTAMP
-cmake_policy(SET CMP0135 NEW)
-
 project(VulkanFreshman
         VERSION 0.0.1
         DESCRIPTION "Vulkan triangle demo"

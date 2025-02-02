@@ -5,6 +5,7 @@ function(vkf_add_shader src)
             OUTPUT ${src}
             COMMAND ${Vulkan_GLSLC_EXECUTABLE} ${__VKF_IN_PATH} -o ${__VKF_OUT_PATH}
             DEPENDS ${__VKF_IN_PATH}
+            COMMENT "Generate SPIR-V - ${__VKF_OUT_PATH}"
     )
 endfunction()
 

@@ -15,6 +15,8 @@ namespace vkf {
 
 class SwapChainManager {
 public:
+    static constexpr vk::Format IMAGE_FORMAT = vk::Format::eB8G8R8A8Unorm;  // TODO: auto-select
+
     inline SwapChainManager(const DeviceManager& deviceMgr, const SurfaceManager& surfaceMgr,
                             const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent);
     inline ~SwapChainManager() noexcept;
@@ -34,12 +36,10 @@ private:
 SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const SurfaceManager& surfaceMgr,
                                    const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent)
     : deviceMgr_(deviceMgr) {
-    constexpr vk::Format imageFormat = vk::Format::eB8G8R8A8Unorm;
-
     vk::SwapchainCreateInfoKHR swapchainInfo;
     swapchainInfo.setSurface(surfaceMgr.getSurface());
     swapchainInfo.setImageExtent(extent);
-    swapchainInfo.setImageFormat(imageFormat);                            // TODO: auto-select
+    swapchainInfo.setImageFormat(IMAGE_FORMAT);
     swapchainInfo.setImageColorSpace(vk::ColorSpaceKHR::eSrgbNonlinear);  // TODO: auto-select
     swapchainInfo.setImageArrayLayers(1);
     swapchainInfo.setImageUsage(vk::ImageUsageFlagBits::eColorAttachment);
@@ -71,7 +71,7 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
         vk::ImageViewCreateInfo viewInfo;
         viewInfo.setImage(image);
         viewInfo.setViewType(vk::ImageViewType::e2D);
-        viewInfo.setFormat(imageFormat);
+        viewInfo.setFormat(IMAGE_FORMAT);
         viewInfo.setSubresourceRange(subResRange);
         auto imageView = device.createImageView(viewInfo);
 
