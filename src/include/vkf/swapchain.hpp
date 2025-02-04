@@ -29,8 +29,6 @@ public:
 private:
     const DeviceManager& deviceMgr_;  // FIXME: UAF
     vk::SwapchainKHR swapchain_;
-    std::vector<vk::Image> images_;
-    std::vector<vk::ImageView> imageViews_;
 };
 
 SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const SurfaceManager& surfaceMgr,
@@ -59,32 +57,11 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
 
     const auto& device = deviceMgr.getDevice();
     swapchain_ = device.createSwapchainKHR(swapchainInfo);
-
-    images_ = device.getSwapchainImagesKHR(swapchain_);
-    imageViews_.reserve(images_.size());
-    for (const auto& image : images_) {
-        vk::ImageSubresourceRange subResRange;
-        subResRange.setAspectMask(vk::ImageAspectFlagBits::eColor);
-        subResRange.setLevelCount(1);
-        subResRange.setLayerCount(1);
-
-        vk::ImageViewCreateInfo viewInfo;
-        viewInfo.setImage(image);
-        viewInfo.setViewType(vk::ImageViewType::e2D);
-        viewInfo.setFormat(IMAGE_FORMAT);
-        viewInfo.setSubresourceRange(subResRange);
-        auto imageView = device.createImageView(viewInfo);
-
-        imageViews_.push_back(imageView);
-    }
 }
 
 SwapChainManager::~SwapChainManager() noexcept {
     const auto& device = deviceMgr_.getDevice();
     device.destroySwapchainKHR(swapchain_);
-    for (const auto& imageView : imageViews_) {
-        device.destroyImageView(imageView);
-    }
 }
 
 }  // namespace vkf

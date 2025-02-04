@@ -14,7 +14,9 @@ int main(int argc, char** argv) {
     vkf::SwapChainManager swapchainMgr{deviceMgr, surfaceMgr, queueFamilyMgr, extent};
     vkf::ShaderManager vertShaderMgr{deviceMgr, "../shader/triangle.vert.spv"};
     vkf::ShaderManager fragShaderMgr{deviceMgr, "../shader/triangle.frag.spv"};
-    vkf::PipelineManager pipelineMgr{deviceMgr, vertShaderMgr, fragShaderMgr, extent};
+    vkf::RenderPassManager renderPassMgr{deviceMgr};
+    vkf::PipelineManager pipelineMgr{deviceMgr, extent, vertShaderMgr, fragShaderMgr, renderPassMgr};
+    vkf::ImageManager imageMgr{deviceMgr, extent, swapchainMgr, renderPassMgr};
 
     windowMgr.loop();
 

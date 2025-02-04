@@ -7,26 +7,27 @@
 #include <vulkan/vulkan.hpp>
 
 #include "vkf/device/logical.hpp"
+#include "vkf/renderpass.hpp"
 #include "vkf/shader.hpp"
-#include "vkf/swapchain.hpp"
 
 namespace vkf {
 
 class PipelineManager {
 public:
-    inline PipelineManager(const DeviceManager& deviceMgr, const ShaderManager& vertShaderMgr,
-                           const ShaderManager& fragShaderMgr, const vk::Extent2D& extent);
+    inline PipelineManager(const DeviceManager& deviceMgr, const vk::Extent2D& extent,
+                           const ShaderManager& vertShaderMgr, const ShaderManager& fragShaderMgr,
+                           const RenderPassManager& renderPassMgr);
     inline ~PipelineManager() noexcept;
 
 private:
-    const DeviceManager& deviceMgr_;  // FIXME: UAF
-    vk::RenderPass renderPass_;
+    const DeviceManager& deviceMgr_;     // FIXME: UAF
     vk::PipelineLayout pipelineLayout_;  // TODO: Extract components
     vk::Pipeline pipeline_;
 };
 
-PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const ShaderManager& vertShaderMgr,
-                                 const ShaderManager& fragShaderMgr, const vk::Extent2D& extent)
+PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const vk::Extent2D& extent,
+                                 const ShaderManager& vertShaderMgr, const ShaderManager& fragShaderMgr,
+                                 const RenderPassManager& renderPassMgr)
     : deviceMgr_(deviceMgr) {
     vk::GraphicsPipelineCreateInfo pipelineInfo;
 
@@ -88,39 +89,11 @@ PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const ShaderMan
     pipelineInfo.setPColorBlendState(&colorBlendInfo);
 
     // Render Pass
-    vk::RenderPassCreateInfo renderPassInfo;
-
-    vk::AttachmentDescription attachDesc;
-    attachDesc.setFormat(SwapChainManager::IMAGE_FORMAT);
-    attachDesc.setInitialLayout(vk::ImageLayout::eUndefined);
-    attachDesc.setFinalLayout(vk::ImageLayout::eColorAttachmentOptimal);
-    attachDesc.setLoadOp(vk::AttachmentLoadOp::eClear);
-    attachDesc.setStoreOp(vk::AttachmentStoreOp::eStore);
-    attachDesc.setSamples(vk::SampleCountFlagBits::e1);
-    // TODO: Stencil OP
-    renderPassInfo.setAttachments(attachDesc);
-
-    vk::AttachmentReference attachRef;
-    attachRef.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
-    attachRef.setAttachment(0);
-    vk::SubpassDescription subpassDesc;
-    subpassDesc.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics);
-    subpassDesc.setColorAttachments(attachRef);
-    renderPassInfo.setSubpasses(subpassDesc);
-
-    vk::SubpassDependency subpassDep;
-    subpassDep.setSrcSubpass(vk::SubpassExternal);
-    subpassDep.setDstSubpass(0);
-    subpassDep.setDstAccessMask(vk::AccessFlagBits::eColorAttachmentWrite);
-    subpassDep.setSrcStageMask(vk::PipelineStageFlagBits::eColorAttachmentOutput);
-    subpassDep.setDstStageMask(vk::PipelineStageFlagBits::eColorAttachmentOutput);
-    renderPassInfo.setDependencies(subpassDep);
-
-    const auto& device = deviceMgr.getDevice();
-    renderPass_ = device.createRenderPass(renderPassInfo);
-    pipelineInfo.setRenderPass(renderPass_);
+    const auto& renderPass = renderPassMgr.getRenderPass();
+    pipelineInfo.setRenderPass(renderPass);
 
     // Pipeline Layout
+    const auto& device = deviceMgr.getDevice();
     vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
     pipelineLayout_ = device.createPipelineLayout(pipelineLayoutInfo);
     pipelineInfo.setLayout(pipelineLayout_);
@@ -132,12 +105,11 @@ PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const ShaderMan
             std::println(std::cerr, "Failed to create graphics pipeline. err: {}", (int)pipelineResult.result);
         }
     }
-    pipeline_ = std::move(pipelineResult.value);
+    pipeline_ = pipelineResult.value;
 }
 
 PipelineManager::~PipelineManager() noexcept {
     const auto& device = deviceMgr_.getDevice();
-    device.destroyRenderPass(renderPass_);
     device.destroyPipelineLayout(pipelineLayout_);
     device.destroyPipeline(pipeline_);
 }
