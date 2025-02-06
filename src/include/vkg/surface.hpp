@@ -15,7 +15,7 @@ public:
     inline SurfaceManager(const InstanceManager& instanceMgr, const WindowManager& windowMgr);
     inline ~SurfaceManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getSurface(this Self& self) noexcept {
         return std::forward_like<Self>(self).surface_;
     }

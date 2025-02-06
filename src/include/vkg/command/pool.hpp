@@ -11,7 +11,7 @@ public:
     inline CommandPoolManager(const DeviceManager& deviceMgr);
     inline ~CommandPoolManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getCommandPool(this Self& self) noexcept {
         return std::forward_like<Self>(self).commandPool_;
     }

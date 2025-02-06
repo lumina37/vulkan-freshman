@@ -14,7 +14,7 @@ public:
     inline CommandBufferManager(const DeviceManager& deviceMgr, const CommandPoolManager& commandPoolMgr);
     inline ~CommandBufferManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getCommandBuffers(this Self& self) noexcept {
         return std::forward_like<Self>(self).commandBuffers_;
     }

@@ -21,7 +21,7 @@ public:
                             const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent);
     inline ~SwapChainManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getSwapchain(this Self& self) noexcept {
         return std::forward_like<Self>(self).swapchain_;
     }

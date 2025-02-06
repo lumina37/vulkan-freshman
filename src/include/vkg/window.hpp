@@ -21,7 +21,7 @@ public:
     [[nodiscard]] inline uint32_t getHeight() const noexcept { return extent_.height; };
     [[nodiscard]] inline vk::Extent2D getExtent() const noexcept { return extent_; };
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getWindow(this Self& self) noexcept {
         return std::forward_like<Self>(self).window_;
     }

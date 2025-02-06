@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <filesystem>
 #include <utility>
 
@@ -17,7 +18,7 @@ public:
     inline ShaderManager(const DeviceManager& deviceMgr, const fs::path& path);
     inline ~ShaderManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getShaderModule(this Self& self) noexcept {
         return std::forward_like<Self>(self).shader_;
     }

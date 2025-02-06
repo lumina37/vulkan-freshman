@@ -16,7 +16,7 @@ public:
                         const SwapChainManager& swapchainMgr, const RenderPassManager& renderPassMgr);
     inline ~ImageManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getFrameBuffers(this Self& self) noexcept {
         return std::forward_like<Self>(self).frameBuffers_;
     }

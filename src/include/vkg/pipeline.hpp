@@ -19,7 +19,7 @@ public:
                            const RenderPassManager& renderPassMgr);
     inline ~PipelineManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getPipeline(this Self& self) noexcept {
         return std::forward_like<Self>(self).pipeline_;
     }

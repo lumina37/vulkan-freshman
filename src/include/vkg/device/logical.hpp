@@ -18,7 +18,7 @@ public:
     inline DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr);
     inline ~DeviceManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getDevice(this Self& self) noexcept {
         return std::forward_like<Self>(self).device_;
     }
@@ -30,7 +30,7 @@ private:
 DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr) {
     const auto& phyDevice = phyDeviceMgr.getPhysicalDevice();
 
-    const float priority = 1.0f;
+    constexpr float priority = 1.0f;
     std::vector<vk::DeviceQueueCreateInfo> deviceQueueInfos;
     vk::DeviceQueueCreateInfo graphicsQueueInfo;
     graphicsQueueInfo.setQueuePriorities(priority);
@@ -49,8 +49,9 @@ DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFa
     vk::DeviceCreateInfo deviceInfo;
     deviceInfo.setQueueCreateInfos(deviceQueueInfos);
 
-    const std::array exts{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
-    deviceInfo.setPEnabledExtensionNames(exts);
+    constexpr std::array<const char*, 1> exts{VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+    deviceInfo.setPpEnabledExtensionNames(exts.data());
+    deviceInfo.setEnabledExtensionCount(exts.size());
 
     device_ = phyDevice.createDevice(deviceInfo);
 }

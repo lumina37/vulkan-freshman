@@ -14,7 +14,7 @@ public:
     inline RenderPassManager(const DeviceManager& deviceMgr);
     inline ~RenderPassManager() noexcept;
 
-    template <class Self>
+    template <typename Self>
     [[nodiscard]] auto&& getRenderPass(this Self& self) noexcept {
         return std::forward_like<Self>(self).renderPass_;
     }
