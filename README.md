@@ -1,3 +1,3 @@
 # vulkan-graphics-demo
 
-Draw a simple triangle in Vulkan.
+Draw a triangle in Vulkan.
