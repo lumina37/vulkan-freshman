@@ -22,7 +22,7 @@ public:
     inline ~SwapChainManager() noexcept;
 
     template <class Self>
-    [[nodiscard]] inline auto&& getSwapchain(this Self& self) noexcept {
+    [[nodiscard]] auto&& getSwapchain(this Self& self) noexcept {
         return std::forward_like<Self>(self).swapchain_;
     }
 
@@ -41,7 +41,7 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
     swapchainInfo.setImageColorSpace(vk::ColorSpaceKHR::eSrgbNonlinear);  // TODO: auto-select
     swapchainInfo.setImageArrayLayers(1);
     swapchainInfo.setImageUsage(vk::ImageUsageFlagBits::eColorAttachment);
-    swapchainInfo.setMinImageCount(3);
+    swapchainInfo.setMinImageCount(2);
     swapchainInfo.setClipped(true);
     swapchainInfo.setPresentMode(vk::PresentModeKHR::eFifo);
 

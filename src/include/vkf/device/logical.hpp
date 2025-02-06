@@ -19,7 +19,7 @@ public:
     inline ~DeviceManager() noexcept;
 
     template <class Self>
-    [[nodiscard]] inline auto&& getDevice(this Self& self) noexcept {
+    [[nodiscard]] auto&& getDevice(this Self& self) noexcept {
         return std::forward_like<Self>(self).device_;
     }
 

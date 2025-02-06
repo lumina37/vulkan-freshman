@@ -18,7 +18,7 @@ public:
     inline ~ShaderManager() noexcept;
 
     template <class Self>
-    [[nodiscard]] inline auto&& getShaderModule(this Self& self) noexcept {
+    [[nodiscard]] auto&& getShaderModule(this Self& self) noexcept {
         return std::forward_like<Self>(self).shader_;
     }
 

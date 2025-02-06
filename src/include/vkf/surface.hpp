@@ -12,11 +12,11 @@ namespace vkf {
 
 class SurfaceManager {
 public:
-    inline SurfaceManager(const InstanceManager& instanceMgr, WindowManager& windowMgr);
+    inline SurfaceManager(const InstanceManager& instanceMgr, const WindowManager& windowMgr);
     inline ~SurfaceManager() noexcept;
 
     template <class Self>
-    [[nodiscard]] inline auto&& getSurface(this Self& self) noexcept {
+    [[nodiscard]] auto&& getSurface(this Self& self) noexcept {
         return std::forward_like<Self>(self).surface_;
     }
 
@@ -25,9 +25,9 @@ private:
     vk::SurfaceKHR surface_;
 };
 
-SurfaceManager::SurfaceManager(const InstanceManager& instanceMgr, WindowManager& windowMgr)
+SurfaceManager::SurfaceManager(const InstanceManager& instanceMgr, const WindowManager& windowMgr)
     : instanceMgr_(instanceMgr) {
-    glfwCreateWindowSurface(instanceMgr.getInstance(), windowMgr.getWindow(), nullptr, (VkSurfaceKHR)&surface_);
+    glfwCreateWindowSurface(instanceMgr.getInstance(), windowMgr.getWindow(), nullptr, (VkSurfaceKHR*)&surface_);
 }
 
 SurfaceManager::~SurfaceManager() noexcept { instanceMgr_.getInstance().destroySurfaceKHR(surface_); }

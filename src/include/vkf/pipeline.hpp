@@ -19,6 +19,11 @@ public:
                            const RenderPassManager& renderPassMgr);
     inline ~PipelineManager() noexcept;
 
+    template <class Self>
+    [[nodiscard]] auto&& getPipeline(this Self& self) noexcept {
+        return std::forward_like<Self>(self).pipeline_;
+    }
+
 private:
     const DeviceManager& deviceMgr_;     // FIXME: UAF
     vk::PipelineLayout pipelineLayout_;  // TODO: Extract components

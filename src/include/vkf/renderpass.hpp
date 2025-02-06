@@ -15,7 +15,7 @@ public:
     inline ~RenderPassManager() noexcept;
 
     template <class Self>
-    [[nodiscard]] inline auto&& getRenderPass(this Self& self) noexcept {
+    [[nodiscard]] auto&& getRenderPass(this Self& self) noexcept {
         return std::forward_like<Self>(self).renderPass_;
     }
 
@@ -30,7 +30,7 @@ RenderPassManager::RenderPassManager(const DeviceManager& deviceMgr) : deviceMgr
     vk::AttachmentDescription attachDesc;
     attachDesc.setFormat(SwapChainManager::IMAGE_FORMAT);
     attachDesc.setInitialLayout(vk::ImageLayout::eUndefined);
-    attachDesc.setFinalLayout(vk::ImageLayout::eColorAttachmentOptimal);
+    attachDesc.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
     attachDesc.setLoadOp(vk::AttachmentLoadOp::eClear);
     attachDesc.setStoreOp(vk::AttachmentStoreOp::eStore);
     attachDesc.setSamples(vk::SampleCountFlagBits::e1);

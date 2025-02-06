@@ -16,6 +16,11 @@ public:
                         const SwapChainManager& swapchainMgr, const RenderPassManager& renderPassMgr);
     inline ~ImageManager() noexcept;
 
+    template <class Self>
+    [[nodiscard]] auto&& getFrameBuffers(this Self& self) noexcept {
+        return std::forward_like<Self>(self).frameBuffers_;
+    }
+
 private:
     const DeviceManager& deviceMgr_;  // FIXME: UAF
     std::vector<vk::Image> images_;
