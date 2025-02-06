@@ -6,15 +6,15 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/command/buffer.hpp"
-#include "vkf/device/logical.hpp"
-#include "vkf/helper/defines.hpp"
-#include "vkf/pipeline.hpp"
-#include "vkf/queue.hpp"
-#include "vkf/renderpass.hpp"
-#include "vkf/swapchain.hpp"
+#include "vkg/command/buffer.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/helper/defines.hpp"
+#include "vkg/pipeline.hpp"
+#include "vkg/queue.hpp"
+#include "vkg/renderpass.hpp"
+#include "vkg/swapchain.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class Renderer {
 public:
@@ -144,4 +144,4 @@ void Renderer::render() {
     }
 }
 
-}  // namespace vkf
+}  // namespace vkg

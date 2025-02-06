@@ -4,11 +4,11 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/logical.hpp"
-#include "vkf/renderpass.hpp"
-#include "vkf/swapchain.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/renderpass.hpp"
+#include "vkg/swapchain.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class ImageManager {
 public:
@@ -73,4 +73,4 @@ ImageManager::~ImageManager() noexcept {
     }
 }
 
-}  // namespace vkf
+}  // namespace vkg

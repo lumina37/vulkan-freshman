@@ -1,9 +1,9 @@
-add_executable(vkf-bin
+add_executable(vkg-bin
         main.cpp
 )
 
-target_link_libraries(vkf-bin PRIVATE
-        vkf-lib
+target_link_libraries(vkg-bin PRIVATE
+        vkg-lib
 )
 
-copy_dlls_if_needed(vkf-bin)
+copy_dlls_if_needed(vkg-bin)

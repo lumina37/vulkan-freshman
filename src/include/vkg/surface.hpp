@@ -5,10 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/instance.hpp"
-#include "vkf/window.hpp"
+#include "vkg/instance.hpp"
+#include "vkg/window.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class SurfaceManager {
 public:
@@ -32,4 +32,4 @@ SurfaceManager::SurfaceManager(const InstanceManager& instanceMgr, const WindowM
 
 SurfaceManager::~SurfaceManager() noexcept { instanceMgr_.getInstance().destroySurfaceKHR(surface_); }
 
-}  // namespace vkf
+}  // namespace vkg

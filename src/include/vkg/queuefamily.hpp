@@ -5,12 +5,12 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/physical.hpp"
-#include "vkf/helper/defines.hpp"
-#include "vkf/instance.hpp"
-#include "vkf/surface.hpp"
+#include "vkg/device/physical.hpp"
+#include "vkg/helper/defines.hpp"
+#include "vkg/instance.hpp"
+#include "vkg/surface.hpp"
 
-namespace vkf {
+namespace vkg {
 
 namespace rgs = std::ranges;
 
@@ -49,4 +49,4 @@ QueueFamilyManager::QueueFamilyManager(const InstanceManager& instMgr, const Phy
     }
 }
 
-}  // namespace vkf
+}  // namespace vkg

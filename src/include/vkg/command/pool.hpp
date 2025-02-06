@@ -2,9 +2,9 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/logical.hpp"
+#include "vkg/device/logical.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class CommandPoolManager {
 public:
@@ -34,4 +34,4 @@ CommandPoolManager::~CommandPoolManager() noexcept {
     device.destroyCommandPool(commandPool_);
 }
 
-}  // namespace vkf
+}  // namespace vkg

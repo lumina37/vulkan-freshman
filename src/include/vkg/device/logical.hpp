@@ -6,12 +6,12 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/physical.hpp"
-#include "vkf/helper/defines.hpp"
-#include "vkf/queuefamily.hpp"
-#include "vkf/window.hpp"
+#include "vkg/device/physical.hpp"
+#include "vkg/helper/defines.hpp"
+#include "vkg/queuefamily.hpp"
+#include "vkg/window.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class DeviceManager {
 public:
@@ -57,4 +57,4 @@ DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFa
 
 DeviceManager::~DeviceManager() noexcept { device_.destroy(); }
 
-}  // namespace vkf
+}  // namespace vkg

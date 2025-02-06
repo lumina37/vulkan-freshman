@@ -4,10 +4,10 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/logical.hpp"
-#include "vkf/swapchain.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/swapchain.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class RenderPassManager {
 public:
@@ -62,4 +62,4 @@ RenderPassManager::~RenderPassManager() noexcept {
     device.destroyRenderPass(renderPass_);
 }
 
-}  // namespace vkf
+}  // namespace vkg

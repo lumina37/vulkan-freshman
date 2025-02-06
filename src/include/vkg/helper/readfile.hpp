@@ -7,9 +7,9 @@
 #include <print>
 #include <vector>
 
-#include "vkf/helper/defines.hpp"
+#include "vkg/helper/defines.hpp"
 
-namespace vkf {
+namespace vkg {
 
 namespace fs = std::filesystem;
 
@@ -31,4 +31,4 @@ std::vector<std::byte> readFile(const fs::path& path) {
     return buffer;
 }
 
-}  // namespace vkf
+}  // namespace vkg

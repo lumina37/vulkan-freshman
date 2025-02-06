@@ -6,12 +6,12 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/logical.hpp"
-#include "vkf/queuefamily.hpp"
-#include "vkf/surface.hpp"
-#include "vkf/window.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/queuefamily.hpp"
+#include "vkg/surface.hpp"
+#include "vkg/window.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class SwapChainManager {
 public:
@@ -64,4 +64,4 @@ SwapChainManager::~SwapChainManager() noexcept {
     device.destroySwapchainKHR(swapchain_);
 }
 
-}  // namespace vkf
+}  // namespace vkg

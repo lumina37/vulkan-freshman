@@ -5,7 +5,7 @@
 
 #include <vulkan/vulkan.hpp>
 
-namespace vkf {
+namespace vkg {
 
 namespace rgs = std::ranges;
 
@@ -19,4 +19,4 @@ static inline bool hasValidationLayer() noexcept {
     return rgs::any_of(vk::enumerateInstanceLayerProperties(), hasValidationLayer);
 }
 
-}  // namespace vkf
+}  // namespace vkg

@@ -6,11 +6,11 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/logical.hpp"
-#include "vkf/renderpass.hpp"
-#include "vkf/shader.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/renderpass.hpp"
+#include "vkg/shader.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class PipelineManager {
 public:
@@ -119,4 +119,4 @@ PipelineManager::~PipelineManager() noexcept {
     device.destroyPipeline(pipeline_);
 }
 
-}  // namespace vkf
+}  // namespace vkg

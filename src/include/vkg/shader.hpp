@@ -5,10 +5,10 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/device/logical.hpp"
-#include "vkf/helper/readfile.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/helper/readfile.hpp"
 
-namespace vkf {
+namespace vkg {
 
 namespace fs = std::filesystem;
 
@@ -43,4 +43,4 @@ ShaderManager::~ShaderManager() noexcept {
     device.destroyShaderModule(shader_);
 }
 
-}  // namespace vkf
+}  // namespace vkg

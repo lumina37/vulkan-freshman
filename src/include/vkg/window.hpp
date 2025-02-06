@@ -5,7 +5,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace vkf {
+namespace vkg {
 
 class WindowManager {
 public:
@@ -45,4 +45,4 @@ std::pair<uint32_t, const char**> WindowManager::getExtensions() {
     return {count, pExts};
 }
 
-}  // namespace vkf
+}  // namespace vkg

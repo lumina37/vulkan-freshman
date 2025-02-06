@@ -1,0 +1,16 @@
+#pragma once
+
+#include "vkg/command.hpp"
+#include "vkg/device.hpp"
+#include "vkg/helper.hpp"
+#include "vkg/image.hpp"
+#include "vkg/instance.hpp"
+#include "vkg/pipeline.hpp"
+#include "vkg/queue.hpp"
+#include "vkg/queuefamily.hpp"
+#include "vkg/renderer.hpp"
+#include "vkg/renderpass.hpp"
+#include "vkg/shader.hpp"
+#include "vkg/surface.hpp"
+#include "vkg/swapchain.hpp"
+#include "vkg/window.hpp"

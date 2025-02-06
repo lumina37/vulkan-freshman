@@ -4,10 +4,10 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/command/pool.hpp"
-#include "vkf/device/logical.hpp"
+#include "vkg/command/pool.hpp"
+#include "vkg/device/logical.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class CommandBufferManager {
 public:
@@ -44,4 +44,4 @@ CommandBufferManager::~CommandBufferManager() noexcept {
     device.freeCommandBuffers(commandPool, commandBuffers_);
 }
 
-}  // namespace vkf
+}  // namespace vkg

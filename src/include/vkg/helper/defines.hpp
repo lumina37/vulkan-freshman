@@ -1,6 +1,6 @@
 #pragma once
 
-namespace vkf {
+namespace vkg {
 
 #ifdef _DEBUG
 static constexpr bool ENABLE_DEBUG = true;
@@ -8,4 +8,4 @@ static constexpr bool ENABLE_DEBUG = true;
 static constexpr bool ENABLE_DEBUG = false;
 #endif
 
-}  // namespace vkf
+}  // namespace vkg

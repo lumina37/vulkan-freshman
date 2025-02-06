@@ -5,10 +5,10 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/helper/defines.hpp"
-#include "vkf/instance.hpp"
+#include "vkg/helper/defines.hpp"
+#include "vkg/instance.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class PhyDeviceManager {
 public:
@@ -32,4 +32,4 @@ PhyDeviceManager::PhyDeviceManager(const InstanceManager& instMgr) {
     }
 }
 
-}  // namespace vkf
+}  // namespace vkg

@@ -2,10 +2,10 @@
 
 #include <vulkan/vulkan.h>
 
-#include "vkf/device/logical.hpp"
-#include "vkf/queuefamily.hpp"
+#include "vkg/device/logical.hpp"
+#include "vkg/queuefamily.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class QueueManager {
 public:
@@ -32,4 +32,4 @@ QueueManager::QueueManager(const DeviceManager& deviceMgr, const QueueFamilyMana
     presentQueue_ = device.getQueue(queueFamilyMgr.getPresentQFamilyIndex(), 0);
 }
 
-}  // namespace vkf
+}  // namespace vkg

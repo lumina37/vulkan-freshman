@@ -5,11 +5,11 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkf/helper/defines.hpp"
-#include "vkf/helper/env.hpp"
-#include "vkf/window.hpp"
+#include "vkg/helper/defines.hpp"
+#include "vkg/helper/env.hpp"
+#include "vkg/window.hpp"
 
-namespace vkf {
+namespace vkg {
 
 class InstanceManager {
 public:
@@ -50,4 +50,4 @@ InstanceManager::InstanceManager() {
 
 InstanceManager::~InstanceManager() noexcept { instance_.destroy(); }
 
-}  // namespace vkf
+}  // namespace vkg
