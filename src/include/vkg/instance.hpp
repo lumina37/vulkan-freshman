@@ -29,7 +29,7 @@ InstanceManager::InstanceManager() {
     constexpr bool ENABLE_VALIDATION_LAYER = ENABLE_DEBUG;
 
     vk::ApplicationInfo appInfo;
-    appInfo.setPApplicationName("vk-freshman");
+    appInfo.setPApplicationName("vulkan-graphics-demo");
     appInfo.setApiVersion(VK_API_VERSION_1_3);
 
     vk::InstanceCreateInfo instInfo;

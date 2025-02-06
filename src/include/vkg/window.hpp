@@ -34,7 +34,7 @@ private:
 WindowManager::WindowManager(const vk::Extent2D& extent) : extent_(extent) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    window_ = glfwCreateWindow((int)extent.width, (int)extent.height, "Vulkan Freshman", nullptr, nullptr);
+    window_ = glfwCreateWindow((int)extent.width, (int)extent.height, "Vulkan Graphics Demo", nullptr, nullptr);
 }
 
 WindowManager::~WindowManager() { glfwDestroyWindow(window_); }
