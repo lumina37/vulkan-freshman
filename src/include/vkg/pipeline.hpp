@@ -59,8 +59,8 @@ PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const vk::Exten
 
     // Viewport
     vk::Viewport viewport;
-    viewport.setWidth(extent.width);
-    viewport.setHeight(extent.height);
+    viewport.setWidth((float)extent.width);
+    viewport.setHeight((float)extent.height);
     vk::Rect2D scissor;
     scissor.setOffset({0, 0});
     scissor.setExtent(extent);
@@ -71,21 +71,19 @@ PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const vk::Exten
 
     // Rasterization
     vk::PipelineRasterizationStateCreateInfo rasterStateInfo;
+    rasterStateInfo.setPolygonMode(vk::PolygonMode::eFill);
     rasterStateInfo.setCullMode(vk::CullModeFlagBits::eBack);
     rasterStateInfo.setFrontFace(vk::FrontFace::eCounterClockwise);
-    rasterStateInfo.setPolygonMode(vk::PolygonMode::eFill);
     rasterStateInfo.setLineWidth(1);
     pipelineInfo.setPRasterizationState(&rasterStateInfo);
 
     // Multi Sampling
     vk::PipelineMultisampleStateCreateInfo multisampleInfo;
-    multisampleInfo.setSampleShadingEnable(false);
     multisampleInfo.setRasterizationSamples(vk::SampleCountFlagBits::e1);
     pipelineInfo.setPMultisampleState(&multisampleInfo);
 
     // Color Blending
     vk::PipelineColorBlendAttachmentState colorBlendAttachment;
-    colorBlendAttachment.setBlendEnable(false);
     colorBlendAttachment.setColorWriteMask(vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
                                            vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA);
     vk::PipelineColorBlendStateCreateInfo colorBlendInfo;

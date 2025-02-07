@@ -32,8 +32,8 @@ ShaderManager::ShaderManager(const DeviceManager& deviceMgr, const fs::path& pat
     const auto& code = readFile(path);
 
     vk::ShaderModuleCreateInfo shaderInfo;
-    shaderInfo.setPCode((uint32_t*)code.data());
     shaderInfo.setCodeSize(code.size());
+    shaderInfo.setPCode((uint32_t*)code.data());
 
     const auto& device = deviceMgr.getDevice();
     shader_ = device.createShaderModule(shaderInfo);

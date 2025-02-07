@@ -32,8 +32,8 @@ CommandBufferManager::CommandBufferManager(const DeviceManager& deviceMgr, const
 
     vk::CommandBufferAllocateInfo allocInfo;
     allocInfo.setCommandPool(commandPool);
-    allocInfo.setCommandBufferCount(1);
     allocInfo.setLevel(vk::CommandBufferLevel::ePrimary);
+    allocInfo.setCommandBufferCount(1);
 
     commandBuffers_ = device.allocateCommandBuffers(allocInfo);
 }

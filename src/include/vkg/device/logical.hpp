@@ -33,16 +33,16 @@ DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFa
     constexpr float priority = 1.0f;
     std::vector<vk::DeviceQueueCreateInfo> deviceQueueInfos;
     vk::DeviceQueueCreateInfo graphicsQueueInfo;
-    graphicsQueueInfo.setQueuePriorities(priority);
     graphicsQueueInfo.setQueueFamilyIndex(queueFamilyMgr.getGraphicsQFamilyIndex());
     graphicsQueueInfo.setQueueCount(1);
+    graphicsQueueInfo.setQueuePriorities(priority);
     deviceQueueInfos.push_back(graphicsQueueInfo);
 
     if (!queueFamilyMgr.sameQFamily()) {
         vk::DeviceQueueCreateInfo presentQueueInfo;
-        presentQueueInfo.setQueuePriorities(priority);
         presentQueueInfo.setQueueFamilyIndex(queueFamilyMgr.getPresentQFamilyIndex());
         presentQueueInfo.setQueueCount(1);
+        presentQueueInfo.setQueuePriorities(priority);
         deviceQueueInfos.push_back(presentQueueInfo);
     }
 

@@ -29,17 +29,16 @@ RenderPassManager::RenderPassManager(const DeviceManager& deviceMgr) : deviceMgr
 
     vk::AttachmentDescription attachDesc;
     attachDesc.setFormat(SwapChainManager::IMAGE_FORMAT);
-    attachDesc.setInitialLayout(vk::ImageLayout::eUndefined);
-    attachDesc.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
+    attachDesc.setSamples(vk::SampleCountFlagBits::e1);
     attachDesc.setLoadOp(vk::AttachmentLoadOp::eClear);
     attachDesc.setStoreOp(vk::AttachmentStoreOp::eStore);
-    attachDesc.setSamples(vk::SampleCountFlagBits::e1);
-    // TODO: Stencil OP
+    attachDesc.setInitialLayout(vk::ImageLayout::eUndefined);
+    attachDesc.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
     renderPassInfo.setAttachments(attachDesc);
 
     vk::AttachmentReference attachRef;
-    attachRef.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
     attachRef.setAttachment(0);
+    attachRef.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
     vk::SubpassDescription subpassDesc;
     subpassDesc.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics);
     subpassDesc.setColorAttachments(attachRef);
@@ -48,9 +47,9 @@ RenderPassManager::RenderPassManager(const DeviceManager& deviceMgr) : deviceMgr
     vk::SubpassDependency subpassDep;
     subpassDep.setSrcSubpass(vk::SubpassExternal);
     subpassDep.setDstSubpass(0);
-    subpassDep.setDstAccessMask(vk::AccessFlagBits::eColorAttachmentWrite);
     subpassDep.setSrcStageMask(vk::PipelineStageFlagBits::eColorAttachmentOutput);
     subpassDep.setDstStageMask(vk::PipelineStageFlagBits::eColorAttachmentOutput);
+    subpassDep.setDstAccessMask(vk::AccessFlagBits::eColorAttachmentWrite);
     renderPassInfo.setDependencies(subpassDep);
 
     const auto& device = deviceMgr.getDevice();

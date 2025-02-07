@@ -30,7 +30,7 @@ InstanceManager::InstanceManager() {
 
     vk::ApplicationInfo appInfo;
     appInfo.setPApplicationName("vulkan-graphics-demo");
-    appInfo.setApiVersion(VK_API_VERSION_1_3);
+    appInfo.setApiVersion(vk::ApiVersion13);
 
     vk::InstanceCreateInfo instInfo;
     instInfo.setPApplicationInfo(&appInfo);

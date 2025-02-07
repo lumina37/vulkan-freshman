@@ -36,14 +36,14 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
     : deviceMgr_(deviceMgr) {
     vk::SwapchainCreateInfoKHR swapchainInfo;
     swapchainInfo.setSurface(surfaceMgr.getSurface());
-    swapchainInfo.setImageExtent(extent);
+    swapchainInfo.setMinImageCount(2);
     swapchainInfo.setImageFormat(IMAGE_FORMAT);
     swapchainInfo.setImageColorSpace(vk::ColorSpaceKHR::eSrgbNonlinear);  // TODO: auto-select
+    swapchainInfo.setImageExtent(extent);
     swapchainInfo.setImageArrayLayers(1);
     swapchainInfo.setImageUsage(vk::ImageUsageFlagBits::eColorAttachment);
-    swapchainInfo.setMinImageCount(2);
-    swapchainInfo.setClipped(true);
     swapchainInfo.setPresentMode(vk::PresentModeKHR::eFifo);
+    swapchainInfo.setClipped(true);
 
     if (queuefamilyMgr.sameQFamily()) {
         swapchainInfo.setImageSharingMode(vk::SharingMode::eExclusive);

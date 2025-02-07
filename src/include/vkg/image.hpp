@@ -53,11 +53,12 @@ ImageManager::ImageManager(const DeviceManager& deviceMgr, const vk::Extent2D& e
         imageViews_.push_back(imageView);
 
         vk::FramebufferCreateInfo frameBufferInfo;
+        frameBufferInfo.setRenderPass(renderPassMgr.getRenderPass());
         frameBufferInfo.setAttachments(imageView);
-        frameBufferInfo.setLayers(1);
         frameBufferInfo.setWidth(extent.width);
         frameBufferInfo.setHeight(extent.height);
-        frameBufferInfo.setRenderPass(renderPassMgr.getRenderPass());
+        frameBufferInfo.setLayers(1);
+
         auto frameBuffer = device.createFramebuffer(frameBufferInfo);
         frameBuffers_.push_back(frameBuffer);
     }
@@ -65,11 +66,11 @@ ImageManager::ImageManager(const DeviceManager& deviceMgr, const vk::Extent2D& e
 
 ImageManager::~ImageManager() noexcept {
     const auto& device = deviceMgr_.getDevice();
-    for (const auto& imageView : imageViews_) {
-        device.destroyImageView(imageView);
-    }
     for (const auto& frameBuffer : frameBuffers_) {
         device.destroyFramebuffer(frameBuffer);
+    }
+    for (const auto& imageView : imageViews_) {
+        device.destroyImageView(imageView);
     }
 }
 
