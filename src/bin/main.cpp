@@ -19,9 +19,8 @@ int main(int argc, char** argv) {
     vkg::PipelineManager pipelineMgr{deviceMgr, extent, vertShaderMgr, fragShaderMgr, renderPassMgr};
     vkg::ImageManager imageMgr{deviceMgr, extent, swapchainMgr, renderPassMgr};
     vkg::CommandPoolManager commandPoolMgr{deviceMgr};
-    vkg::CommandBufferManager commandBufferMgr{deviceMgr, commandPoolMgr};
 
-    vkg::Renderer renderer{deviceMgr,     swapchainMgr, commandBufferMgr, pipelineMgr,
+    vkg::Renderer renderer{deviceMgr,     swapchainMgr, commandPoolMgr, pipelineMgr,
                            renderPassMgr, imageMgr,     extent,           queueMgr};
 
     // Main Loop

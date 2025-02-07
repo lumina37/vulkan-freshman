@@ -7,7 +7,7 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "vkg/command/buffer.hpp"
+#include "vkg/command/pool.hpp"
 #include "vkg/device/logical.hpp"
 #include "vkg/helper/defines.hpp"
 #include "vkg/pipeline.hpp"
@@ -20,7 +20,7 @@ namespace vkg {
 class Renderer {
 public:
     inline Renderer(const DeviceManager& deviceMgr, const SwapChainManager& swapchainMgr,
-                    const CommandBufferManager& commandBufferMgr, const PipelineManager& pipelineMgr,
+                    const CommandPoolManager& commandPoolMgr, const PipelineManager& pipelineMgr,
                     const RenderPassManager& renderPassMgr, const ImageManager& imageMgr, const vk::Extent2D& extent,
                     const QueueManager& queueMgr);
     inline ~Renderer() noexcept;
@@ -30,28 +30,30 @@ public:
 private:
     const DeviceManager& deviceMgr_;
     const SwapChainManager& swapchainMgr_;
-    const CommandBufferManager& commandBufferMgr_;
+    const CommandPoolManager& commandPoolMgr_;
     const PipelineManager& pipelineMgr_;
     const RenderPassManager& renderPassMgr_;
     const ImageManager& imageMgr_;
     vk::Extent2D extent_;
     const QueueManager& queueMgr_;
+    CommandBufferManager commandBufferMgr_;
     vk::Fence commandCompleteFence_;
     vk::Semaphore imageAvailableSem_;
 };
 
 Renderer::Renderer(const DeviceManager& deviceMgr, const SwapChainManager& swapchainMgr,
-                   const CommandBufferManager& commandBufferMgr, const PipelineManager& pipelineMgr,
+                   const CommandPoolManager& commandPoolMgr, const PipelineManager& pipelineMgr,
                    const RenderPassManager& renderPassMgr, const ImageManager& imageMgr, const vk::Extent2D& extent,
                    const QueueManager& queueMgr)
     : deviceMgr_(deviceMgr),
       swapchainMgr_(swapchainMgr),
-      commandBufferMgr_(commandBufferMgr),
+      commandPoolMgr_(commandPoolMgr),
       pipelineMgr_(pipelineMgr),
       renderPassMgr_(renderPassMgr),
       imageMgr_(imageMgr),
       extent_(extent),
-      queueMgr_(queueMgr) {
+      queueMgr_(queueMgr),
+      commandBufferMgr_(deviceMgr, commandPoolMgr) {
     vk::FenceCreateInfo fenceInfo;
     // fenceInfo.setFlags(vk::FenceCreateFlagBits::eSignaled);
     const auto& device = deviceMgr.getDevice();
