@@ -17,8 +17,7 @@ namespace rgs = std::ranges;
 
 class QueueFamilyManager {
 public:
-    inline QueueFamilyManager(const InstanceManager& instMgr, const PhyDeviceManager& phyDeviceMgr,
-                              const SurfaceManager& surfaceMgr);
+    inline QueueFamilyManager(const PhyDeviceManager& phyDeviceMgr, const SurfaceManager& surfaceMgr);
 
     [[nodiscard]] inline uint32_t getGraphicsQFamilyIndex() const noexcept { return graphicsQFamilyIndex_; }
     [[nodiscard]] inline uint32_t getPresentQFamilyIndex() const noexcept { return presentQFamilyIndex_; }
@@ -29,14 +28,13 @@ private:
     uint32_t presentQFamilyIndex_;
 };
 
-QueueFamilyManager::QueueFamilyManager(const InstanceManager& instMgr, const PhyDeviceManager& phyDeviceMgr,
-                                       const SurfaceManager& surfaceMgr)
+QueueFamilyManager::QueueFamilyManager(const PhyDeviceManager& phyDeviceMgr, const SurfaceManager& surfaceMgr)
     : graphicsQFamilyIndex_(0), presentQFamilyIndex_(0) {
     const auto& physicalDevice = phyDeviceMgr.getPhysicalDevice();
     const auto& surface = surfaceMgr.getSurface();
 
     const auto& queueFamilyProps = physicalDevice.getQueueFamilyProperties();
-    for (const auto& [idx, queueFamilyProp] : rgs::views::enumerate(queueFamilyProps)) {
+    for (const auto [idx, queueFamilyProp] : rgs::views::enumerate(queueFamilyProps)) {
         if (queueFamilyProp.queueFlags & vk::QueueFlagBits::eGraphics) {
             if (!physicalDevice.getSurfaceSupportKHR(idx, surface)) {
                 continue;

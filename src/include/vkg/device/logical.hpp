@@ -15,11 +15,11 @@ namespace vkg {
 
 class DeviceManager {
 public:
-    inline DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr);
+    inline DeviceManager(PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr);
     inline ~DeviceManager() noexcept;
 
     template <typename Self>
-    [[nodiscard]] auto&& getDevice(this Self& self) noexcept {
+    [[nodiscard]] auto&& getDevice(this Self&& self) noexcept {
         return std::forward_like<Self>(self).device_;
     }
 
@@ -27,8 +27,8 @@ private:
     vk::Device device_;
 };
 
-DeviceManager::DeviceManager(const PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr) {
-    const auto& phyDevice = phyDeviceMgr.getPhysicalDevice();
+DeviceManager::DeviceManager(PhyDeviceManager& phyDeviceMgr, const QueueFamilyManager& queueFamilyMgr) {
+    auto& phyDevice = phyDeviceMgr.getPhysicalDevice();
 
     constexpr float priority = 1.0f;
     std::vector<vk::DeviceQueueCreateInfo> deviceQueueInfos;

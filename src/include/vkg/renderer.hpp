@@ -19,32 +19,31 @@ namespace vkg {
 
 class Renderer {
 public:
-    inline Renderer(const DeviceManager& deviceMgr, const SwapChainManager& swapchainMgr,
-                    const CommandPoolManager& commandPoolMgr, const PipelineManager& pipelineMgr,
-                    const RenderPassManager& renderPassMgr, const ImageManager& imageMgr, const vk::Extent2D& extent,
-                    const QueueManager& queueMgr);
+    inline Renderer(DeviceManager& deviceMgr, SwapChainManager& swapchainMgr, CommandPoolManager& commandPoolMgr,
+                    PipelineManager& pipelineMgr, const RenderPassManager& renderPassMgr, ImageManager& imageMgr,
+                    const vk::Extent2D extent, QueueManager& queueMgr);
     inline ~Renderer() noexcept;
 
     inline void render();
 
 private:
-    const DeviceManager& deviceMgr_;
-    const SwapChainManager& swapchainMgr_;
-    const CommandPoolManager& commandPoolMgr_;
-    const PipelineManager& pipelineMgr_;
+    // FIXME: lots of UAF
+    DeviceManager& deviceMgr_;
+    SwapChainManager& swapchainMgr_;
+    CommandPoolManager& commandPoolMgr_;
+    PipelineManager& pipelineMgr_;
     const RenderPassManager& renderPassMgr_;
-    const ImageManager& imageMgr_;
+    ImageManager& imageMgr_;
     vk::Extent2D extent_;
-    const QueueManager& queueMgr_;
+    QueueManager& queueMgr_;
     CommandBufferManager commandBufferMgr_;
     vk::Fence commandCompleteFence_;
     vk::Semaphore imageAvailableSem_;
 };
 
-Renderer::Renderer(const DeviceManager& deviceMgr, const SwapChainManager& swapchainMgr,
-                   const CommandPoolManager& commandPoolMgr, const PipelineManager& pipelineMgr,
-                   const RenderPassManager& renderPassMgr, const ImageManager& imageMgr, const vk::Extent2D& extent,
-                   const QueueManager& queueMgr)
+Renderer::Renderer(DeviceManager& deviceMgr, SwapChainManager& swapchainMgr, CommandPoolManager& commandPoolMgr,
+                   PipelineManager& pipelineMgr, const RenderPassManager& renderPassMgr, ImageManager& imageMgr,
+                   const vk::Extent2D extent, QueueManager& queueMgr)
     : deviceMgr_(deviceMgr),
       swapchainMgr_(swapchainMgr),
       commandPoolMgr_(commandPoolMgr),
@@ -56,7 +55,7 @@ Renderer::Renderer(const DeviceManager& deviceMgr, const SwapChainManager& swapc
       commandBufferMgr_(deviceMgr, commandPoolMgr) {
     vk::FenceCreateInfo fenceInfo;
     // fenceInfo.setFlags(vk::FenceCreateFlagBits::eSignaled);
-    const auto& device = deviceMgr.getDevice();
+    auto& device = deviceMgr.getDevice();
     commandCompleteFence_ = device.createFence(fenceInfo);
 
     vk::SemaphoreCreateInfo semaphoreInfo;
@@ -64,16 +63,16 @@ Renderer::Renderer(const DeviceManager& deviceMgr, const SwapChainManager& swapc
 }
 
 inline Renderer::~Renderer() noexcept {
-    const auto& device = deviceMgr_.getDevice();
+    auto& device = deviceMgr_.getDevice();
     device.destroyFence(commandCompleteFence_);
     device.destroySemaphore(imageAvailableSem_);
 }
 
 void Renderer::render() {
-    const auto& device = deviceMgr_.getDevice();
-    const auto& swapchain = swapchainMgr_.getSwapchain();
+    auto& device = deviceMgr_.getDevice();
+    auto& swapchain = swapchainMgr_.getSwapchain();
 
-    const auto& nextImageIndexResult =
+    const auto nextImageIndexResult =
         device.acquireNextImageKHR(swapchain, std::numeric_limits<uint64_t>::max(), imageAvailableSem_);
     if constexpr (ENABLE_DEBUG) {
         if (nextImageIndexResult.result != vk::Result::eSuccess) {
@@ -82,7 +81,7 @@ void Renderer::render() {
     }
     auto nextImageIndex = nextImageIndexResult.value;
 
-    const auto& cmdBuf = commandBufferMgr_.getCommandBuffers()[0];
+    auto cmdBuf = commandBufferMgr_.getCommandBuffers()[0];
     cmdBuf.reset();
 
     // Begin Command Buffer
@@ -96,7 +95,7 @@ void Renderer::render() {
     vk::RenderPassBeginInfo renderPassBeginInfo;
     renderPassBeginInfo.setRenderPass(renderPassMgr_.getRenderPass());
 
-    const auto& frameBuffers = imageMgr_.getFrameBuffers();
+    auto& frameBuffers = imageMgr_.getFrameBuffers();
     renderPassBeginInfo.setFramebuffer(frameBuffers[nextImageIndex]);
 
     vk::Rect2D scissor;
@@ -121,10 +120,10 @@ void Renderer::render() {
     constexpr vk::PipelineStageFlags waitStage = vk::PipelineStageFlagBits::eColorAttachmentOutput;
     submitInfo.setWaitDstStageMask(waitStage);
 
-    const auto& graphicsQueue = queueMgr_.getGraphicsQueue();
+    auto& graphicsQueue = queueMgr_.getGraphicsQueue();
     graphicsQueue.submit(submitInfo, commandCompleteFence_);
 
-    const auto& waitFenceResult =
+    const auto waitFenceResult =
         device.waitForFences(commandCompleteFence_, true, std::numeric_limits<uint64_t>::max());
     if constexpr (ENABLE_DEBUG) {
         if (waitFenceResult != vk::Result::eSuccess) {
@@ -138,8 +137,8 @@ void Renderer::render() {
     presentInfo.setImageIndices(nextImageIndex);
     presentInfo.setSwapchains(swapchain);
 
-    const auto& presentQueue = queueMgr_.getPresentQueue();
-    const auto& presentResult = presentQueue.presentKHR(presentInfo);
+    auto& presentQueue = queueMgr_.getPresentQueue();
+    const auto presentResult = presentQueue.presentKHR(presentInfo);
     if constexpr (ENABLE_DEBUG) {
         if (presentResult != vk::Result::eSuccess) {
             std::println(std::cerr, "Present Failed!");

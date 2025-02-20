@@ -9,7 +9,7 @@ namespace vkg {
 
 class WindowManager {
 public:
-    inline WindowManager(const vk::Extent2D& extent);
+    inline WindowManager(const vk::Extent2D extent);
     inline ~WindowManager();
 
     static inline void globalInit() { glfwInit(); }
@@ -22,7 +22,7 @@ public:
     [[nodiscard]] inline vk::Extent2D getExtent() const noexcept { return extent_; };
 
     template <typename Self>
-    [[nodiscard]] auto&& getWindow(this Self& self) noexcept {
+    [[nodiscard]] auto&& getWindow(this Self&& self) noexcept {
         return std::forward_like<Self>(self).window_;
     }
 
@@ -31,7 +31,7 @@ private:
     GLFWwindow* window_;
 };
 
-WindowManager::WindowManager(const vk::Extent2D& extent) : extent_(extent) {
+WindowManager::WindowManager(const vk::Extent2D extent) : extent_(extent) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     window_ = glfwCreateWindow((int)extent.width, (int)extent.height, "Vulkan Graphics Demo", nullptr, nullptr);

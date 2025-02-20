@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     vkg::PhyDeviceManager phyDeviceMgr{instMgr};
     vkg::WindowManager windowMgr{extent};
     vkg::SurfaceManager surfaceMgr{instMgr, windowMgr};
-    vkg::QueueFamilyManager queueFamilyMgr{instMgr, phyDeviceMgr, surfaceMgr};
+    vkg::QueueFamilyManager queueFamilyMgr{phyDeviceMgr, surfaceMgr};
     vkg::DeviceManager deviceMgr{phyDeviceMgr, queueFamilyMgr};
     vkg::QueueManager queueMgr{deviceMgr, queueFamilyMgr};
     vkg::SwapChainManager swapchainMgr{deviceMgr, surfaceMgr, queueFamilyMgr, extent};
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     vkg::CommandPoolManager commandPoolMgr{deviceMgr};
 
     vkg::Renderer renderer{deviceMgr,     swapchainMgr, commandPoolMgr, pipelineMgr,
-                           renderPassMgr, imageMgr,     extent,           queueMgr};
+                           renderPassMgr, imageMgr,     extent,         queueMgr};
 
     // Main Loop
     while (!glfwWindowShouldClose(windowMgr.getWindow())) {

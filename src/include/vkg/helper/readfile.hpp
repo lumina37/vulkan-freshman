@@ -13,7 +13,7 @@ namespace vkg {
 
 namespace fs = std::filesystem;
 
-std::vector<std::byte> readFile(const fs::path& path) {
+static inline std::vector<std::byte> readFile(const fs::path& path) {
     std::ifstream file{path, std::ios::ate | std::ios::binary};
 
     if constexpr (ENABLE_DEBUG) {
@@ -22,7 +22,7 @@ std::vector<std::byte> readFile(const fs::path& path) {
         }
     }
 
-    std::streamsize fileSize = file.tellg();
+    const std::streamsize fileSize = file.tellg();
     std::vector<std::byte> buffer(fileSize);
 
     file.seekg(0);

@@ -11,20 +11,20 @@ namespace vkg {
 
 class RenderPassManager {
 public:
-    inline RenderPassManager(const DeviceManager& deviceMgr);
+    inline RenderPassManager(DeviceManager& deviceMgr);
     inline ~RenderPassManager() noexcept;
 
     template <typename Self>
-    [[nodiscard]] auto&& getRenderPass(this Self& self) noexcept {
+    [[nodiscard]] auto&& getRenderPass(this Self&& self) noexcept {
         return std::forward_like<Self>(self).renderPass_;
     }
 
 private:
-    const DeviceManager& deviceMgr_;  // FIXME: UAF
+    DeviceManager& deviceMgr_;  // FIXME: UAF
     vk::RenderPass renderPass_;
 };
 
-RenderPassManager::RenderPassManager(const DeviceManager& deviceMgr) : deviceMgr_(deviceMgr) {
+RenderPassManager::RenderPassManager(DeviceManager& deviceMgr) : deviceMgr_(deviceMgr) {
     vk::RenderPassCreateInfo renderPassInfo;
 
     vk::AttachmentDescription attachDesc;
@@ -52,12 +52,12 @@ RenderPassManager::RenderPassManager(const DeviceManager& deviceMgr) : deviceMgr
     subpassDep.setDstAccessMask(vk::AccessFlagBits::eColorAttachmentWrite);
     renderPassInfo.setDependencies(subpassDep);
 
-    const auto& device = deviceMgr.getDevice();
+    auto& device = deviceMgr.getDevice();
     renderPass_ = device.createRenderPass(renderPassInfo);
 }
 
 RenderPassManager::~RenderPassManager() noexcept {
-    const auto& device = deviceMgr_.getDevice();
+    auto& device = deviceMgr_.getDevice();
     device.destroyRenderPass(renderPass_);
 }
 

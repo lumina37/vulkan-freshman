@@ -17,22 +17,22 @@ class SwapChainManager {
 public:
     static constexpr vk::Format IMAGE_FORMAT = vk::Format::eB8G8R8A8Unorm;  // TODO: auto-select
 
-    inline SwapChainManager(const DeviceManager& deviceMgr, const SurfaceManager& surfaceMgr,
-                            const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent);
+    inline SwapChainManager(DeviceManager& deviceMgr, SurfaceManager& surfaceMgr,
+                            const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D extent);
     inline ~SwapChainManager() noexcept;
 
     template <typename Self>
-    [[nodiscard]] auto&& getSwapchain(this Self& self) noexcept {
+    [[nodiscard]] auto&& getSwapchain(this Self&& self) noexcept {
         return std::forward_like<Self>(self).swapchain_;
     }
 
 private:
-    const DeviceManager& deviceMgr_;  // FIXME: UAF
+    DeviceManager& deviceMgr_;  // FIXME: UAF
     vk::SwapchainKHR swapchain_;
 };
 
-SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const SurfaceManager& surfaceMgr,
-                                   const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D& extent)
+SwapChainManager::SwapChainManager(DeviceManager& deviceMgr, SurfaceManager& surfaceMgr,
+                                   const QueueFamilyManager& queuefamilyMgr, const vk::Extent2D extent)
     : deviceMgr_(deviceMgr) {
     vk::SwapchainCreateInfoKHR swapchainInfo;
     swapchainInfo.setSurface(surfaceMgr.getSurface());
@@ -55,12 +55,12 @@ SwapChainManager::SwapChainManager(const DeviceManager& deviceMgr, const Surface
         swapchainInfo.setQueueFamilyIndices(queuefamilyIndices);
     }
 
-    const auto& device = deviceMgr.getDevice();
+    auto& device = deviceMgr.getDevice();
     swapchain_ = device.createSwapchainKHR(swapchainInfo);
 }
 
 SwapChainManager::~SwapChainManager() noexcept {
-    const auto& device = deviceMgr_.getDevice();
+    auto& device = deviceMgr_.getDevice();
     device.destroySwapchainKHR(swapchain_);
 }
 

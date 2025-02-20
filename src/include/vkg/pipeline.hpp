@@ -14,23 +14,22 @@ namespace vkg {
 
 class PipelineManager {
 public:
-    inline PipelineManager(const DeviceManager& deviceMgr, const vk::Extent2D& extent,
-                           const ShaderManager& vertShaderMgr, const ShaderManager& fragShaderMgr,
-                           const RenderPassManager& renderPassMgr);
+    inline PipelineManager(DeviceManager& deviceMgr, const vk::Extent2D extent, const ShaderManager& vertShaderMgr,
+                           const ShaderManager& fragShaderMgr, const RenderPassManager& renderPassMgr);
     inline ~PipelineManager() noexcept;
 
     template <typename Self>
-    [[nodiscard]] auto&& getPipeline(this Self& self) noexcept {
+    [[nodiscard]] auto&& getPipeline(this Self&& self) noexcept {
         return std::forward_like<Self>(self).pipeline_;
     }
 
 private:
-    const DeviceManager& deviceMgr_;     // FIXME: UAF
+    DeviceManager& deviceMgr_;           // FIXME: UAF
     vk::PipelineLayout pipelineLayout_;  // TODO: Extract components
     vk::Pipeline pipeline_;
 };
 
-PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const vk::Extent2D& extent,
+PipelineManager::PipelineManager(DeviceManager& deviceMgr, const vk::Extent2D extent,
                                  const ShaderManager& vertShaderMgr, const ShaderManager& fragShaderMgr,
                                  const RenderPassManager& renderPassMgr)
     : deviceMgr_(deviceMgr) {
@@ -96,7 +95,7 @@ PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const vk::Exten
     pipelineInfo.setRenderPass(renderPass);
 
     // Pipeline Layout
-    const auto& device = deviceMgr.getDevice();
+    auto& device = deviceMgr.getDevice();
     vk::PipelineLayoutCreateInfo pipelineLayoutInfo;
     pipelineLayout_ = device.createPipelineLayout(pipelineLayoutInfo);
     pipelineInfo.setLayout(pipelineLayout_);
@@ -112,7 +111,7 @@ PipelineManager::PipelineManager(const DeviceManager& deviceMgr, const vk::Exten
 }
 
 PipelineManager::~PipelineManager() noexcept {
-    const auto& device = deviceMgr_.getDevice();
+    auto& device = deviceMgr_.getDevice();
     device.destroyPipelineLayout(pipelineLayout_);
     device.destroyPipeline(pipeline_);
 }

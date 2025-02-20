@@ -12,33 +12,33 @@ namespace vkg {
 
 class ImageManager {
 public:
-    inline ImageManager(const DeviceManager& deviceMgr, const vk::Extent2D& extent,
-                        const SwapChainManager& swapchainMgr, const RenderPassManager& renderPassMgr);
+    inline ImageManager(DeviceManager& deviceMgr, const vk::Extent2D extent, const SwapChainManager& swapchainMgr,
+                        const RenderPassManager& renderPassMgr);
     inline ~ImageManager() noexcept;
 
     template <typename Self>
-    [[nodiscard]] auto&& getFrameBuffers(this Self& self) noexcept {
+    [[nodiscard]] auto&& getFrameBuffers(this Self&& self) noexcept {
         return std::forward_like<Self>(self).frameBuffers_;
     }
 
 private:
-    const DeviceManager& deviceMgr_;  // FIXME: UAF
+    DeviceManager& deviceMgr_;  // FIXME: UAF
     std::vector<vk::Image> images_;
     std::vector<vk::ImageView> imageViews_;
     std::vector<vk::Framebuffer> frameBuffers_;
 };
 
-ImageManager::ImageManager(const DeviceManager& deviceMgr, const vk::Extent2D& extent,
-                           const SwapChainManager& swapchainMgr, const RenderPassManager& renderPassMgr)
+ImageManager::ImageManager(DeviceManager& deviceMgr, const vk::Extent2D extent, const SwapChainManager& swapchainMgr,
+                           const RenderPassManager& renderPassMgr)
     : deviceMgr_(deviceMgr) {
-    const auto& device = deviceMgr.getDevice();
+    auto& device = deviceMgr.getDevice();
     const auto& swapchain = swapchainMgr.getSwapchain();
 
     images_ = device.getSwapchainImagesKHR(swapchain);
 
     imageViews_.reserve(images_.size());
     frameBuffers_.reserve(images_.size());
-    for (const auto& image : images_) {
+    for (auto& image : images_) {
         vk::ImageSubresourceRange subResRange;
         subResRange.setAspectMask(vk::ImageAspectFlagBits::eColor);
         subResRange.setLevelCount(1);
@@ -65,11 +65,11 @@ ImageManager::ImageManager(const DeviceManager& deviceMgr, const vk::Extent2D& e
 }
 
 ImageManager::~ImageManager() noexcept {
-    const auto& device = deviceMgr_.getDevice();
-    for (const auto& frameBuffer : frameBuffers_) {
+    auto& device = deviceMgr_.getDevice();
+    for (auto& frameBuffer : frameBuffers_) {
         device.destroyFramebuffer(frameBuffer);
     }
-    for (const auto& imageView : imageViews_) {
+    for (auto& imageView : imageViews_) {
         device.destroyImageView(imageView);
     }
 }
